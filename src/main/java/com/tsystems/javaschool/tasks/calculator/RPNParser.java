@@ -7,6 +7,14 @@ import java.util.Map;
 import java.util.Stack;
 
 public class RPNParser {
+    public static final String PLUS = "+";
+    public static final String MINUS = "-";
+    public static final String DIVISION = "/";
+    public static final String MULTIPLICATION = "*";
+    public static final String LEFT_PARENTHESIS = "(";
+    public static final String RIGHT_PARENTHESIS = ")";
+    public static final char DECIMAL_SEPARATOR = '.';
+    
     private static final Map<String, Integer> operatorToPriority;
     private final List<String> rpnTokens = new ArrayList<>();
     private final Stack<String> operatorStack = new Stack<>();
@@ -14,12 +22,12 @@ public class RPNParser {
     static {
         operatorToPriority = new HashMap<>();
         
-        operatorToPriority.put("*", 2);
-        operatorToPriority.put("/", 2);
-        operatorToPriority.put("+", 1);
-        operatorToPriority.put("-", 1);
-        operatorToPriority.put(")", 0);
-        operatorToPriority.put("(", 0);
+        operatorToPriority.put(MULTIPLICATION, 2);
+        operatorToPriority.put(DIVISION, 2);
+        operatorToPriority.put(PLUS, 1);
+        operatorToPriority.put(MINUS, 1);
+        operatorToPriority.put(RIGHT_PARENTHESIS, 0);
+        operatorToPriority.put(LEFT_PARENTHESIS, 0);
     }
     
     public List<String> parseStatementToRPNTokens(String statement) {
@@ -27,13 +35,15 @@ public class RPNParser {
             final String token = String.valueOf(statement.charAt(i));
             
             if (isNumber(token)) {
-                addOperandToRPN(token);
-                continue;
-            }
-            
-            if (isOperator(token)) {
+            	final String number = extractNumberFromStatement(statement.substring(i));
+                
+            	addOperandToRPN(number);
+                
+            	i += number.length() - 1;
+            } else if (isOperator(token)) {
                 addOperatorToRPN(token);
-            }
+            } else return null;
+            
         }
         
         getRemainingOperators();
@@ -43,7 +53,7 @@ public class RPNParser {
     
     private boolean isNumber(String token) {
         try {
-            Integer.parseInt(String.valueOf(token));
+            Double.parseDouble(token);
         } catch (NumberFormatException nfe) {
             return false;
         }
@@ -55,16 +65,33 @@ public class RPNParser {
         return operatorToPriority.containsKey(token);
     }
     
+    private String extractNumberFromStatement(String statement) {
+        final StringBuilder number = new StringBuilder();
+        char currentSym;
+        
+        for (int i = 0; i < statement.length(); i++)       {
+            currentSym = statement.charAt(i);
+        
+            if (Character.isDigit(currentSym) || currentSym == DECIMAL_SEPARATOR) {
+                number.append(currentSym);
+            } else {
+                break;
+            }        
+        }
+      
+      return number.toString();
+    }
+    
     private void addOperandToRPN(String token) {
         rpnTokens.add(token);
     }
     
     private void addOperatorToRPN(String operator) {
-        if ("(".equals(operator)) {
+        if (operator.equals(LEFT_PARENTHESIS)) {
             operatorStack.push(operator);
         }
-        else if (")".equals(operator)) {
-            while (!operatorStack.peek().equals("(")) {
+        else if (operator.equals(RIGHT_PARENTHESIS)) {
+            while (!operatorStack.peek().equals(LEFT_PARENTHESIS)) {
                 rpnTokens.add(operatorStack.pop());
             }
             

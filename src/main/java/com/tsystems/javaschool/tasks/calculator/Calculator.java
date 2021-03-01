@@ -8,21 +8,34 @@ import java.util.Set;
 import java.util.Stack;
 
 public class Calculator {
+    public static final String PLUS = "+";
+    public static final String MINUS = "-";
+    public static final String DIVISION = "/";
+    public static final String MULTIPLICATION = "*";
+    public static final String ROUNDING_FORMAT = "#.####";
+    
     private static final Stack<String> operationStack = new Stack<>();
-    private static final Set<String> operators = new HashSet<>(Arrays.asList("+", "-", "/", "*"));
+    private static final Set<String> operators = new HashSet<>(Arrays.asList(PLUS, MINUS, DIVISION, MULTIPLICATION));
     
     public String evaluate(String statement) {
-        if (isNotValid(statement)) {
+        if (isStatementInvalid(statement)) {
             return null;
         }
         
         final List<String> tokens = new RPNParser().parseStatementToRPNTokens(statement);
         
+        if (tokens == null) {
+            return null;
+        }
         
-        return calculateRPNStatement(tokens);
+        final String statementResult = calculateRPNStatement(tokens);
+        
+        emptyStack();
+        
+        return statementResult;
     }
     
-    private boolean isNotValid(String statement) {
+    private boolean isStatementInvalid(String statement) {
         return statement == null || statement.isEmpty() || statement.trim().isEmpty();
     }
     
@@ -32,9 +45,7 @@ public class Calculator {
             
             if (isNumber(currentToken)) {
                 addOperandToStack(currentToken);
-            }
-            
-            if (isOperator(currentToken)) {
+            } else if (isOperator(currentToken)) {
                 final String exprValue = calculateExpression(currentToken);
                 
                 if (exprValue == null) {
@@ -42,6 +53,8 @@ public class Calculator {
                 }
                 
                 addOperandToStack(exprValue);
+            } else {
+                return null;
             }
         }
         
@@ -50,7 +63,7 @@ public class Calculator {
     
     private boolean isNumber(String token) {
         try {
-            Integer.parseInt(String.valueOf(token));
+            Double.parseDouble(token);
         } catch (NumberFormatException nfe) {
             return false;
         }
@@ -67,19 +80,23 @@ public class Calculator {
     }
     
     private String calculateExpression(String operator) {
-        if (operator.equals("+")) {
+        if (!checkIfStackHasTwoOperandsForExpression()) {
+            return null;
+        }
+        
+        if (operator.equals(PLUS)) {
             return calculateSum();
         }
         
-        if (operator.equals("-")) {
+        if (operator.equals(MINUS)) {
             return calculateDifference();
         }
         
-        if (operator.equals("/")) {
+        if (operator.equals(DIVISION)) {
             return calculateQuotient();
         }
         
-        if (operator.equals("*")) {
+        if (operator.equals(MULTIPLICATION)) {
             return calculateMultiplication();
         }
         
@@ -87,24 +104,36 @@ public class Calculator {
     }
     
     private String calculateSum() {
-        return Double.toString(Double.valueOf(operationStack.pop()) + Double.valueOf(operationStack.pop()));
+        final double firstAddend = Double.parseDouble(operationStack.pop());
+        final double secondAddend = Double.parseDouble(operationStack.pop());
+        
+        return Double.toString(firstAddend + secondAddend);
     }
     
     private String calculateDifference() {
-        return Double.toString(Double.valueOf(operationStack.pop()) - Double.valueOf(operationStack.pop()));
+        final double subtrahent = Double.parseDouble(operationStack.pop());
+        final double minuent = Double.parseDouble(operationStack.pop());
+        
+        return Double.toString(minuent - subtrahent);
     }
     
     private String calculateQuotient() {
         final double divisor = Double.parseDouble(operationStack.pop());
-        final double divident = Double.parseDouble(operationStack.pop());
+        final double dividend = Double.parseDouble(operationStack.pop());
         
-        return Math.abs(divisor) < 2 * Double.MIN_VALUE ? null : Double.toString(divident / divisor);
+        return Math.abs(divisor) < 2 * Double.MIN_VALUE ? null : Double.toString(dividend / divisor);
     }
     
     private String calculateMultiplication() {
-        return Double.toString(Double.valueOf(operationStack.pop()) * Double.valueOf(operationStack.pop()));
+        final double firstMultiplier = Double.parseDouble(operationStack.pop());
+        final double secondMultiplier = Double.parseDouble(operationStack.pop());
+        
+        return Double.toString(firstMultiplier * secondMultiplier);
     }
     
+    private boolean checkIfStackHasTwoOperandsForExpression() {
+        return operationStack.size() >= 2;
+    }
     private String getStatementResult() {
         return roundResultValue(operationStack.pop());
     }
@@ -115,9 +144,13 @@ public class Calculator {
         if (result == (int)result) {
             return String.valueOf((int)result);
         } else {
-            final DecimalFormat df = new DecimalFormat("#.####");
+            final DecimalFormat df = new DecimalFormat(ROUNDING_FORMAT);
             
             return df.format(result);
         }
+    }
+    
+    private void emptyStack() {
+        operationStack.clear();
     }
 }
