@@ -22,7 +22,8 @@ public class Calculator {
             return null;
         }
         
-        final List<String> tokens = new RPNParser().parseStatementToRPNTokens(statement);
+        final RPNParserProvider parser = new RPNParser();
+        final List<String> tokens = parser.parseStatementToRPNTokens(statement);
         
         if (tokens == null) {
             return null;

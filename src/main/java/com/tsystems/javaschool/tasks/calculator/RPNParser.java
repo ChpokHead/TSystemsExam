@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-public class RPNParser {
+public class RPNParser implements RPNParserProvider{
     public static final String PLUS = "+";
     public static final String MINUS = "-";
     public static final String DIVISION = "/";
@@ -30,6 +30,7 @@ public class RPNParser {
         operatorToPriority.put(LEFT_PARENTHESIS, 0);
     }
     
+    @Override
     public List<String> parseStatementToRPNTokens(String statement) {
         for (int i = 0; i < statement.length(); i++) {
             final String token = String.valueOf(statement.charAt(i));
