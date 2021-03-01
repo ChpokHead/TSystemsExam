@@ -14,6 +14,10 @@ public class Validator implements ValidationProvider{
             throw new CannotBuildPyramidException();
         }
         
+        if (inputNumbers.contains(null)) {
+            throw new CannotBuildPyramidException();
+        }
+        
         checkNumbersAmountForEveryPyramidLevel(inputNumbers);
     }
     
