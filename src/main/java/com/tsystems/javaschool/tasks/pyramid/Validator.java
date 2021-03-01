@@ -18,10 +18,10 @@ public class Validator implements ValidationProvider{
             throw new CannotBuildPyramidException();
         }
         
-        checkNumbersAmountForEveryPyramidLevel(inputNumbers);
+        checkNumbersEnoughForEveryPyramidLevel(inputNumbers);
     }
     
-    private void checkNumbersAmountForEveryPyramidLevel(List<Integer> inputNumbers) {
+    private void checkNumbersEnoughForEveryPyramidLevel(List<Integer> inputNumbers) {
         int rowNum = 0;
         int numAmount = inputNumbers.size();
         
