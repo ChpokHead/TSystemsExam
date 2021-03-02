@@ -3,18 +3,31 @@ package com.tsystems.javaschool.tasks.subsequence;
 import java.util.List;
 
 public class Subsequence {
-
-    /**
-     * Checks if it is possible to get a sequence which is equal to the first
-     * one by removing some elements from the second one.
-     *
-     * @param x first sequence
-     * @param y second sequence
-     * @return <code>true</code> if possible, otherwise <code>false</code>
-     */
+    private final ValidationProvider validator = new Validator();
+    
     @SuppressWarnings("rawtypes")
-    public boolean find(List x, List y) {
-        // TODO: Implement the logic here
-        return false;
+    public boolean find(List firstSequence, List secondSequence) {
+        validator.validate(firstSequence, secondSequence);
+        
+        return isSecondSequenceContainsFirstSequenceElemsInRightOrder(firstSequence, secondSequence);
+    }
+    
+    @SuppressWarnings("rawtypes")
+    boolean isSecondSequenceContainsFirstSequenceElemsInRightOrder(List firstSequence, List secondSequence) {
+        int elementsFound = 0;
+        int secondSequencePos = 0;
+        
+        for (Object firstSequenceElem : firstSequence) {
+            while (secondSequencePos < secondSequence.size()) {
+                if (firstSequenceElem.equals(secondSequence.get(secondSequencePos))) {
+                    elementsFound++;
+                    break;
+                }
+                
+                secondSequencePos++;
+            }
+        }
+        
+        return elementsFound == firstSequence.size();
     }
 }
