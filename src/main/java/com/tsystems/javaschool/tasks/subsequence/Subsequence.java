@@ -1,20 +1,26 @@
 package com.tsystems.javaschool.tasks.subsequence;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Subsequence {
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    private final ValidationProvider validator = new Validator();
+    
+    @SuppressWarnings("rawtypes")
     public boolean find(List firstSequence, List secondSequence) {
-        int secondSequencePos = 0;
+        validator.validate(firstSequence, secondSequence);
         
-        final List list = new ArrayList(firstSequence);
+        return isSecondSequenceContainsFirstSequenceElemsInRightOrder(firstSequence, secondSequence);
+    }
+    
+    @SuppressWarnings("rawtypes")
+    boolean isSecondSequenceContainsFirstSequenceElemsInRightOrder(List firstSequence, List secondSequence) {
+        int elementsFound = 0;
+        int secondSequencePos = 0;
         
         for (Object firstSequenceElem : firstSequence) {
             while (secondSequencePos < secondSequence.size()) {
                 if (firstSequenceElem.equals(secondSequence.get(secondSequencePos))) {
-                    list.remove(firstSequenceElem);
+                    elementsFound++;
                     break;
                 }
                 
@@ -22,7 +28,6 @@ public class Subsequence {
             }
         }
         
-        return list.isEmpty();
+        return elementsFound == firstSequence.size();
     }
-    
 }
