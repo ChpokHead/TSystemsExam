@@ -16,6 +16,7 @@ public class RPNParser implements RPNParserProvider{
     public static final char DECIMAL_SEPARATOR = '.';
     
     private static final Map<String, Integer> operatorToPriority;
+    
     private final List<String> rpnTokens = new ArrayList<>();
     private final Stack<String> operatorStack = new Stack<>();
     
