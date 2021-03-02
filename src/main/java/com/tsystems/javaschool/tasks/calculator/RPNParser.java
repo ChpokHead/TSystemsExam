@@ -18,7 +18,7 @@ public class RPNParser implements RPNParserProvider{
     private static final Map<String, Integer> operatorToPriority;
     
     private final List<String> rpnTokens = new ArrayList<>();
-    private final Stack<String> operatorStack = new Stack<>();
+    private final Stack<String> operatorsStack = new Stack<>();
     
     static {
         operatorToPriority = new HashMap<>();
@@ -90,27 +90,27 @@ public class RPNParser implements RPNParserProvider{
     
     private void addOperatorToRPN(String operator) {
         if (operator.equals(LEFT_PARENTHESIS)) {
-            operatorStack.push(operator);
+            operatorsStack.push(operator);
         }
         else if (operator.equals(RIGHT_PARENTHESIS)) {
-            while (!operatorStack.peek().equals(LEFT_PARENTHESIS)) {
-                rpnTokens.add(operatorStack.pop());
+            while (!operatorsStack.peek().equals(LEFT_PARENTHESIS)) {
+                rpnTokens.add(operatorsStack.pop());
             }
             
-            operatorStack.pop();
+            operatorsStack.pop();
         }
         else {
-            while (!operatorStack.isEmpty() && operatorToPriority.get(operator) <= operatorToPriority.get(operatorStack.peek())) {
-                rpnTokens.add(operatorStack.pop());
+            while (!operatorsStack.isEmpty() && operatorToPriority.get(operator) <= operatorToPriority.get(operatorsStack.peek())) {
+                rpnTokens.add(operatorsStack.pop());
             }
             
-            operatorStack.push(operator);
+            operatorsStack.push(operator);
         }
     }
     
     private void getRemainingOperators() {
-        while (!operatorStack.isEmpty()) {
-            rpnTokens.add(operatorStack.pop());
+        while (!operatorsStack.isEmpty()) {
+            rpnTokens.add(operatorsStack.pop());
         }
     }
 }
