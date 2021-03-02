@@ -1,9 +1,11 @@
 package com.tsystems.javaschool.tasks.calculator;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.Stack;
 
@@ -14,8 +16,8 @@ public class Calculator {
     public static final String MULTIPLICATION = "*";
     public static final String ROUNDING_FORMAT = "#.####";
     
-    private static final Stack<String> operationStack = new Stack<>();
-    private static final Set<String> operators = new HashSet<>(Arrays.asList(PLUS, MINUS, DIVISION, MULTIPLICATION));
+    private final Stack<String> operationStack = new Stack<>();
+    private final Set<String> operators = new HashSet<>(Arrays.asList(PLUS, MINUS, DIVISION, MULTIPLICATION));
     
     public String evaluate(String statement) {
         if (isStatementInvalid(statement)) {
@@ -145,9 +147,12 @@ public class Calculator {
         if (result == (int)result) {
             return String.valueOf((int)result);
         } else {
-            final DecimalFormat df = new DecimalFormat(ROUNDING_FORMAT);
+            final NumberFormat numFormat = NumberFormat.getNumberInstance(Locale.US);
+            final DecimalFormat decFormat = (DecimalFormat) numFormat;
             
-            return df.format(result);
+            decFormat.applyPattern(ROUNDING_FORMAT);
+            
+            return decFormat.format(result);
         }
     }
     
