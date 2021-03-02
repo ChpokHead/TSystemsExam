@@ -11,13 +11,10 @@ The exam includes 3 tasks to be done: [Calculator](/tasks/Calculator.md), [Pyram
 
 ### Result ###
 
-* Author name : {PUT YOUR NAME HERE}
-* Codeship : {PUT YOUR CODESHIP BAGDE HERE}
+* Author name : DANIL IKHSANOV
+* Codeship : [![Codeship Status for chpokhead/javaschoolexam](https://app.codeship.com/projects/d0094297-94b7-45ce-a00a-cfd4a991bc7b/status?branch=master)](https://app.codeship.com/projects/431647)
 
-Example of Codeship badge. Please remove the example before you send us the link. 
-[ ![Codeship Status for tschool/javaschoolexam](https://app.codeship.com/projects/a9af8940-d130-0134-89a6-5e8aaaa2a5a2/status?branch=master)](https://app.codeship.com/projects/201451)
-
-
+It is better to add interfaces for Calculator, Pyramid and Subsequence classes, but I shouldn't modify your tests.
 ### How to start?  ###
 * Install [GIT](https://git-scm.com/) and [Maven](https://maven.apache.org)
 * [Fork](https://confluence.atlassian.com/bitbucket/forking-a-repository-221449527.html) the repository 
