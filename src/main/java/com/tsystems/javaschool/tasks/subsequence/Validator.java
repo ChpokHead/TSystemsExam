@@ -8,11 +8,11 @@ public class Validator implements ValidationProvider {
     @Override
     public void validate(List firstSequence, List secondSequence) {
         if (firstSequence == null) {
-            throw new IllegalArgumentException("firstSequenceIsNull");
+            throw new IllegalArgumentException("First sequence is null!");
         }
         
         if (secondSequence == null) {
-            throw new IllegalArgumentException("secondSequenceIsNull");
+            throw new IllegalArgumentException("Second sequence is null!");
         }
         
     }
