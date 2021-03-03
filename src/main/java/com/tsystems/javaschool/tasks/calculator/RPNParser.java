@@ -7,13 +7,13 @@ import java.util.Map;
 import java.util.Stack;
 
 public class RPNParser implements RPNParserProvider{
-    public static final String PLUS = "+";
-    public static final String MINUS = "-";
-    public static final String DIVISION = "/";
-    public static final String MULTIPLICATION = "*";
-    public static final String LEFT_PARENTHESIS = "(";
-    public static final String RIGHT_PARENTHESIS = ")";
-    public static final char DECIMAL_SEPARATOR = '.';
+    private static final String PLUS = "+";
+    private static final String MINUS = "-";
+    private static final String DIVISION = "/";
+    private static final String MULTIPLICATION = "*";
+    private static final String LEFT_PARENTHESIS = "(";
+    private static final String RIGHT_PARENTHESIS = ")";
+    private static final char DECIMAL_SEPARATOR = '.';
     
     private static final Map<String, Integer> operatorToPriority;
     

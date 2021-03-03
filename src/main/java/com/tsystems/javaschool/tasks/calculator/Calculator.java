@@ -10,11 +10,11 @@ import java.util.Set;
 import java.util.Stack;
 
 public class Calculator {
-    public static final String PLUS = "+";
-    public static final String MINUS = "-";
-    public static final String DIVISION = "/";
-    public static final String MULTIPLICATION = "*";
-    public static final String ROUNDING_FORMAT = "#.####";
+    private static final String PLUS = "+";
+    private static final String MINUS = "-";
+    private static final String DIVISION = "/";
+    private static final String MULTIPLICATION = "*";
+    private static final String ROUNDING_FORMAT = "#.####";
     
     private final Stack<String> operationStack = new Stack<>();
     private final Set<String> operators = new HashSet<>(Arrays.asList(PLUS, MINUS, DIVISION, MULTIPLICATION));
